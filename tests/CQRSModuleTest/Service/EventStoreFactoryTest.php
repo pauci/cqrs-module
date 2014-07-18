@@ -41,4 +41,7 @@ class FooEventStore implements EventStoreInterface
 {
     public function store(DomainEventInterface $event)
     {}
+
+    public function read($offset = null, $limit = 10)
+    {}
 }
