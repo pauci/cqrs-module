@@ -7,7 +7,18 @@ Sygic CQRSModule integrates CQRS library with Zend Framework 2 quickly and easil
 Installation of this module uses composer. For composer documentation, please refer to
 [getcomposer.org](http://getcomposer.org/).
 
-    php composer.phar require doctrine/doctrine-orm-module
+First ensure you have sygic's local satis repository added to your composer.json:
+
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://satis.ssd.sygic.local"
+        }
+    ],
+
+Install the module via command:
+
+    php composer.phar require sygic/cqrs-module
     # (When asked for a version, type `dev-master`)
 
 Then add `CQRSModule` to your `config/application.config.php`
