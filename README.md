@@ -1,7 +1,6 @@
 # Sygic CQRS Module for Zend Framework 2
 
 Sygic CQRSModule integrates CQRS library with Zend Framework 2 quickly and easily.
-    - access to
 
 ## Installation
 
