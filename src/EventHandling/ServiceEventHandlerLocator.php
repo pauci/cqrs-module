@@ -2,7 +2,6 @@
 
 namespace CQRSModule\EventHandling;
 
-use CQRS\EventHandling\EventName;
 use CQRS\EventHandling\Locator\MemoryEventHandlerLocator;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
@@ -19,10 +18,10 @@ class ServiceEventHandlerLocator extends MemoryEventHandlerLocator implements
     private $subscribedServices = [];
 
     /**
-     * @param EventName $eventName
+     * @param string $eventName
      * @return array
      */
-    public function getEventHandlers(EventName $eventName)
+    public function getEventHandlers($eventName)
     {
         $this->subscribeServices($eventName);
 
@@ -51,7 +50,7 @@ class ServiceEventHandlerLocator extends MemoryEventHandlerLocator implements
     }
 
     /**
-     * @param EventName $eventName
+     * @param string $eventName
      */
     private function subscribeServices($eventName)
     {
