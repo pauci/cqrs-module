@@ -40,13 +40,17 @@ class EventStoreFactory extends AbstractFactory
         /** @var \CQRS\Serializer\SerializerInterface $serializer */
         $serializer = $sl->get($options->getSerializer());
 
-        $namespace = $options->getNamespace();
-
         $connection = null;
         if ($options->getConnection()) {
             $connection = $sl->get($options->getConnection());
         }
 
-        return new $class($serializer, $namespace, $connection);
+        $namespace = $options->getNamespace();
+
+        if (null !== $namespace) {
+            return new $class($serializer, $connection, $namespace);
+        }
+
+        return new $class($serializer, $connection);
     }
 } 

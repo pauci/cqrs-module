@@ -13,10 +13,10 @@ class EventStore extends AbstractOptions
     protected $serializer;
 
     /** @var string */
-    protected $namespace = 'cqrs_events';
+    protected $connection;
 
     /** @var string */
-    protected $connection;
+    protected $namespace;
 
     /**
      * @param string $class
@@ -55,24 +55,6 @@ class EventStore extends AbstractOptions
     }
 
     /**
-     * @param string $namespace
-     * @return $this
-     */
-    public function setNamespace($namespace)
-    {
-        $this->namespace = $namespace;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNamespace()
-    {
-        return $this->namespace;
-    }
-
-    /**
      * @param string $connection
      * @return self
      */
@@ -88,5 +70,23 @@ class EventStore extends AbstractOptions
     public function getConnection()
     {
         return $this->connection;
+    }
+
+    /**
+     * @param string $namespace
+     * @return $this
+     */
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
     }
 }
