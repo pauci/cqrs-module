@@ -40,12 +40,12 @@ class EventPublisherFactory extends AbstractFactory
         /** @var \CQRS\EventHandling\EventBusInterface $eventBus */
         $eventBus = $sl->get($options->getEventBus());
 
-        $eventPublisher = new $class($eventBus);
-
-        if ($eventPublisher instanceof OrmDomainEventPublisher) {
+        if ($class == OrmDomainEventPublisher::class) {
             /** @var \Doctrine\ORM\EntityManager $entityManager */
-            $entityManager = $sl->get($options->getOrmEntityManager());
-            $entityManager->getEventManager()->addEventSubscriber($eventPublisher);
+            $entityManager  = $sl->get($options->getOrmEntityManager());
+            $eventPublisher = new OrmDomainEventPublisher($eventBus, $entityManager);
+        } else {
+            $eventPublisher = new $class($eventBus);
         }
 
         return $eventPublisher;
