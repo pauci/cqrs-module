@@ -9,6 +9,9 @@ class Serializer extends AbstractOptions
     /** @var string */
     protected $class;
 
+    /** @var string */
+    protected $instance;
+
     /**
      * @param string $class
      * @return $this
@@ -25,5 +28,21 @@ class Serializer extends AbstractOptions
     public function getClass()
     {
         return $this->class;
+    }
+
+    /**
+     * @param string $instance
+     */
+    public function setInstance($instance)
+    {
+        $this->instance = $instance;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInstance()
+    {
+        return $this->instance;
     }
 } 

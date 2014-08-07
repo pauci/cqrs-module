@@ -36,6 +36,12 @@ class SerializerFactory extends AbstractFactory
     {
         $class = $options->getClass();
 
+        $instanceName = $options->getInstance();
+        if ($instanceName !== null) {
+            $instance = $sl->get($instanceName);
+            return new $class($instance);
+        }
+
         return new $class;
     }
 }
