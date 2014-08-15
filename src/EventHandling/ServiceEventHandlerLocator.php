@@ -35,7 +35,7 @@ class ServiceEventHandlerLocator extends MemoryEventHandlerLocator implements
      * @param string|array $serviceName
      * @param int $priority
      */
-    public function registerService($eventName, $serviceName, $priority = 1)
+    public function addService($eventName, $serviceName, $priority = 1)
     {
         $eventNames   = (array) $eventName;
         $serviceNames = (array) $serviceName;
@@ -68,7 +68,7 @@ class ServiceEventHandlerLocator extends MemoryEventHandlerLocator implements
                 }
 
                 $service = $this->serviceLocator->get($serviceName);
-                $this->registerSubscriber($service, $priority);
+                $this->addSubscriber($service, $priority);
                 $this->subscribedServices[$serviceName] = true;
             }
         }

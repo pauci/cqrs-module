@@ -3,6 +3,7 @@
 namespace CQRSModule\Service;
 
 use CQRS\CommandHandling\Locator\CommandHandlerLocatorInterface;
+use CQRS\CommandHandling\Locator\MemoryCommandHandlerLocator;
 use CQRSModule\Options\CommandHandlerLocator as CommandHandlerLocatorOptions;
 use RuntimeException;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -43,7 +44,6 @@ class CommandHandlerLocatorFactory extends AbstractFactory
             throw new RuntimeException('CommandHandlerLocatorInterface must have a class name to instantiate');
         }
 
-        /** @var CommandHandlerLocatorInterface $commandHandlerLocator */
         $commandHandlerLocator = new $class;
 
         if ($commandHandlerLocator instanceof ServiceLocatorAwareInterface) {
@@ -51,9 +51,7 @@ class CommandHandlerLocatorFactory extends AbstractFactory
         }
 
         $handlers = $options->getHandlers();
-
         foreach ($handlers as $commandTypeOrServiceName => $serviceOrCommandTypes) {
-
             if (is_array($serviceOrCommandTypes)) {
                 $commandTypes = $serviceOrCommandTypes;
                 $service      = $commandTypeOrServiceName;

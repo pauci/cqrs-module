@@ -56,7 +56,7 @@ class EventHandlerLocator extends AbstractOptions
     }
 
     /**
-     * @param array $subscribers
+     * @param object[] $subscribers
      * @return self
      */
     public function setSubscribers(array $subscribers)
@@ -66,7 +66,7 @@ class EventHandlerLocator extends AbstractOptions
     }
 
     /**
-     * @return array
+     * @return object[]
      */
     public function getSubscribers()
     {

@@ -32,7 +32,7 @@ class CommandHandlerLocator extends AbstractOptions
     }
 
     /**
-     * @param array $handlers
+     * @param object[] $handlers
      * @return self
      */
     public function setHandlers(array $handlers)
@@ -42,7 +42,7 @@ class CommandHandlerLocator extends AbstractOptions
     }
 
     /**
-     * @return array
+     * @return object[]
      */
     public function getHandlers()
     {
