@@ -32,7 +32,7 @@ class NotificationsControllerTest extends AbstractHttpControllerTestCase
         $this->assertResponseStatusCode(200);
 
         $this->assertModuleName('CQRSModule');
-        $this->assertControllerName('CQRSModule\Controller\Notification');
+        $this->assertControllerName('CQRSModule\Controller\NotificationController');
         $this->assertControllerClass('NotificationController');
         $this->assertMatchedRouteName('cqrs/notifications');
 

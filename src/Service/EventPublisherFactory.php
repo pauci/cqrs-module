@@ -2,8 +2,11 @@
 
 namespace CQRSModule\Service;
 
+use CQRS\EventHandling\EventBusInterface;
+use CQRS\EventHandling\Publisher\DomainEventQueue;
 use CQRS\EventHandling\Publisher\EventPublisherInterface;
-use CQRS\Plugin\Doctrine\EventHandling\OrmDomainEventPublisher;
+use CQRS\EventHandling\Publisher\IdentityMapInterface;
+use CQRS\EventStore\EventStoreInterface;
 use CQRSModule\Options\EventPublisher as EventPublisherOptions;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -37,17 +40,17 @@ class EventPublisherFactory extends AbstractFactory
     {
         $class = $options->getClass();
 
-        /** @var \CQRS\EventHandling\EventBusInterface $eventBus */
+        /** @var EventBusInterface $eventBus */
         $eventBus = $sl->get($options->getEventBus());
 
-        if ($class == OrmDomainEventPublisher::class) {
-            /** @var \Doctrine\ORM\EntityManager $entityManager */
-            $entityManager  = $sl->get($options->getOrmEntityManager());
-            $eventPublisher = new OrmDomainEventPublisher($eventBus, $entityManager);
-        } else {
-            $eventPublisher = new $class($eventBus);
-        }
+        /** @var IdentityMapInterface $identityMap */
+        $identityMap = $sl->get($options->getIdentityMap());
 
-        return $eventPublisher;
+        /** @var EventStoreInterface $eventStore */
+        $eventStore = $sl->get($options->getEventStore());
+
+        $additionalMetadata = $options->getAdditionalMetadata();
+
+        return new $class($eventBus, new DomainEventQueue($identityMap), $eventStore, $additionalMetadata);
     }
 } 

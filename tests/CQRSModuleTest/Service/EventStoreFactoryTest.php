@@ -2,7 +2,7 @@
 
 namespace CQRSModuleTest\Service;
 
-use CQRS\Domain\Message\DomainEventMessageInterface;
+use CQRS\Domain\Message\EventMessageInterface;
 use CQRS\EventStore\EventStoreInterface;
 use CQRS\Serializer\SerializerInterface;
 use CQRSModule\Service\EventStoreFactory;
@@ -93,7 +93,7 @@ class FooEventStore implements EventStoreInterface
         $this->namespace  = $namespace;
     }
 
-    public function store(DomainEventMessageInterface $event)
+    public function store(EventMessageInterface $event)
     {}
 
     public function read($offset = null, $limit = 10)

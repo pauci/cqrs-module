@@ -2,16 +2,16 @@
 
 namespace CQRSModule\Options;
 
-use CQRS\EventHandling\SynchronousEventBus;
+use CQRS\EventHandling\Publisher\SimpleIdentityMap;
 use Zend\Stdlib\AbstractOptions;
 
-class EventBus extends AbstractOptions
+class IdentityMap extends AbstractOptions
 {
     /** @var string */
-    protected $class = SynchronousEventBus::class;
+    protected $class = SimpleIdentityMap::class;
 
     /** @var string */
-    protected $eventHandlerLocator = 'cqrs_default';
+    protected $entityManager = 'doctrine.entitymanager.orm_default';
 
     /**
      * @param string $class
@@ -32,20 +32,20 @@ class EventBus extends AbstractOptions
     }
 
     /**
-     * @param string $eventHandlerLocator
+     * @param string $entityManager
      * @return self
      */
-    public function setEventHandlerLocator($eventHandlerLocator)
+    public function setEntityManager($entityManager)
     {
-        $this->eventHandlerLocator = $eventHandlerLocator;
+        $this->entityManager = $entityManager;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getEventHandlerLocator()
+    public function getEntityManager()
     {
-        return "cqrs.event_handler_locator.{$this->eventHandlerLocator}";
+        return $this->entityManager;
     }
 }

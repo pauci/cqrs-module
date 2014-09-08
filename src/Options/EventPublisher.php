@@ -7,14 +7,30 @@ use Zend\Stdlib\AbstractOptions;
 
 class EventPublisher extends AbstractOptions
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $class = SimpleEventPublisher::class;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $eventBus = 'cqrs_default';
 
-    /** @var string */
-    protected $ormEntityManager = 'orm_default';
+    /**
+     * @var string
+     */
+    protected $eventStore = 'cqrs_default';
+
+    /**
+     * @var string
+     */
+    protected $identityMap = 'cqrs_default';
+
+    /**
+     * @var array
+     */
+    protected $additionalMetadata;
 
     /**
      * @param string $class
@@ -53,20 +69,51 @@ class EventPublisher extends AbstractOptions
     }
 
     /**
-     * @param string $ormEntityManager
+     * @param $eventStore
      * @return self
      */
-    public function setOrmEntityManager($ormEntityManager)
+    public function setEventStore($eventStore)
     {
-        $this->ormEntityManager = $ormEntityManager;
+        $this->eventStore = $eventStore;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getOrmEntityManager()
+    public function getEventStore()
     {
-        return "doctrine.entitymanager.{$this->ormEntityManager}";
+        return "cqrs.event_store.{$this->eventStore}";
+    }
+
+    /**
+     * @param string $identityMap
+     * @return self
+     */
+    public function setIdentityMap($identityMap)
+    {
+        $this->identityMap = $identityMap;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentityMap()
+    {
+        return "cqrs.identity_map.{$this->identityMap}";
+    }
+
+    /**
+     * @param array $additionalMetadata
+     */
+    public function setAdditionalMetadata(array $additionalMetadata)
+    {
+        $this->additionalMetadata = $additionalMetadata;
+    }
+
+    public function getAdditionalMetadata()
+    {
+        return $this->additionalMetadata;
     }
 }
