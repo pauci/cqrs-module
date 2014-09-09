@@ -142,11 +142,11 @@ return [
 
     'doctrine' => [
         'driver' => [
-            'CQRS_Driver' => [
+            'CQRS_driver' => [
                 'class' => Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
                 'cache' => 'array',
                 'paths' => [
-                    __DIR__ . '/../src/Domain'
+                    __DIR__ . '/../../cqrs/src/Domain/Model'
                 ]
             ]
         ],
@@ -158,15 +158,6 @@ return [
                 ]
             ]
         ],
-        /*
-        'eventmanager' => [
-            'orm_default' => [
-                'subscribers' => [
-                    'CQRS\Plugin\Doctrine\Domain\AggregateRootMetadataListener'
-                ]
-            ]
-        ]
-        */
     ],
 
     'controllers' => [
