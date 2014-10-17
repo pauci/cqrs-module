@@ -28,6 +28,11 @@ class EventPublisher extends AbstractOptions
     protected $identityMap = 'cqrs_default';
 
     /**
+     * @var string
+     */
+    protected $entityManager = 'doctrine.entitymanager.orm_default';
+
+    /**
      * @var array
      */
     protected $additionalMetadata;
@@ -102,6 +107,24 @@ class EventPublisher extends AbstractOptions
     public function getIdentityMap()
     {
         return "cqrs.identity_map.{$this->identityMap}";
+    }
+
+    /**
+     * @param string $entityManager
+     * @return self
+     */
+    public function setEntityManager($entityManager)
+    {
+        $this->entityManager = $entityManager;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
     }
 
     /**

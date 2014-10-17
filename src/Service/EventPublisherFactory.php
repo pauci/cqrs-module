@@ -7,7 +7,9 @@ use CQRS\EventHandling\Publisher\DomainEventQueue;
 use CQRS\EventHandling\Publisher\EventPublisherInterface;
 use CQRS\EventHandling\Publisher\IdentityMapInterface;
 use CQRS\EventStore\EventStoreInterface;
+use CQRS\Plugin\Doctrine\EventHandling\Publisher\DoctrineEventPublisher;
 use CQRSModule\Options\EventPublisher as EventPublisherOptions;
+use Doctrine\ORM\EntityManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class EventPublisherFactory extends AbstractFactory
@@ -51,6 +53,14 @@ class EventPublisherFactory extends AbstractFactory
 
         $additionalMetadata = $options->getAdditionalMetadata();
 
-        return new $class($eventBus, new DomainEventQueue($identityMap), $eventStore, $additionalMetadata);
+        $eventPublisher = new $class($eventBus, new DomainEventQueue($identityMap), $eventStore, $additionalMetadata);
+
+        if ($eventPublisher instanceof DoctrineEventPublisher) {
+            /** @var EntityManager $entityManager */
+            $entityManager = $sl->get($options->getEntityManager());
+            $entityManager->getEventManager()->addEventSubscriber($eventPublisher);
+        }
+
+        return $eventPublisher;
     }
 } 
