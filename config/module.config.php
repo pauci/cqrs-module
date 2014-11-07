@@ -115,6 +115,10 @@ return [
             ]
         ],
 
+        'logger' => [
+            'class' => Psr\Log\NullLogger,
+        ],
+
         'serializer' => [
             'reflection' => [
                 'class' => CQRS\Serializer\ReflectionSerializer::class,
@@ -132,6 +136,7 @@ return [
         'event_handler_locator'   => CQRSModule\Service\EventHandlerLocatorFactory::class,
         'event_store'             => CQRSModule\Service\EventStoreFactory::class,
         'serializer'              => CQRSModule\Service\SerializerFactory::class,
+        'serializer'              => CQRSModule\Service\LoggerFactory::class,
     ],
 
     'service_manager' => [
