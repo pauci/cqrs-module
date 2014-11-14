@@ -19,6 +19,9 @@ class CommandBus extends AbstractOptions
     /** @var string */
     protected $eventPublisher = 'cqrs_default';
 
+    /** @var string */
+    protected $logger = 'cqrs_default';
+
     /**
      * @param string $class
      * @return self
@@ -89,5 +92,13 @@ class CommandBus extends AbstractOptions
     public function getEventPublisher()
     {
         return "cqrs.event_publisher.{$this->eventPublisher}";
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogger()
+    {
+        return "cqrs.logger.{$this->logger}";
     }
 } 

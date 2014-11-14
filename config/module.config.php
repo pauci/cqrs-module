@@ -116,7 +116,7 @@ return [
         ],
 
         'logger' => [
-            'class' => Psr\Log\NullLogger,
+            'class' => Psr\Log\NullLogger::class,
         ],
 
         'serializer' => [
