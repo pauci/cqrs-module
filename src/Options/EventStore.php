@@ -6,16 +6,24 @@ use Zend\Stdlib\AbstractOptions;
 
 class EventStore extends AbstractOptions
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $class;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $serializer;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $connection;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $namespace;
 
     /**

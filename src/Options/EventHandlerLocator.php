@@ -7,16 +7,24 @@ use Zend\Stdlib\AbstractOptions;
 
 class EventHandlerLocator extends AbstractOptions
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $class = ServiceEventHandlerLocator::class;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $callbacks = [];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $subscribers = [];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $services = [];
 
     /**

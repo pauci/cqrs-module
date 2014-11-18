@@ -7,20 +7,30 @@ use Zend\Stdlib\AbstractOptions;
 
 class CommandBus extends AbstractOptions
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $class = SequentialCommandBus::class;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $commandHandlerLocator = 'cqrs_default';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $transactionManager = 'cqrs_default';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $eventPublisher = 'cqrs_default';
 
-    /** @var string */
-    protected $logger = 'cqrs_default';
+    /**
+     * @var string
+     */
+    protected $logger = 'cqrs.logger.cqrs_default';
 
     /**
      * @param string $class
@@ -99,6 +109,6 @@ class CommandBus extends AbstractOptions
      */
     public function getLogger()
     {
-        return "cqrs.logger.{$this->logger}";
+        return $this->logger;
     }
 } 

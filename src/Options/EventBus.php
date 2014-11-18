@@ -7,14 +7,20 @@ use Zend\Stdlib\AbstractOptions;
 
 class EventBus extends AbstractOptions
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $class = SynchronousEventBus::class;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $eventHandlerLocator = 'cqrs_default';
 
-    /** @var string */
-    protected $logger = 'cqrs_default';
+    /**
+     * @var string
+     */
+    protected $logger = 'cqrs.logger.cqrs_default';
 
     /**
      * @param string $class
@@ -57,6 +63,6 @@ class EventBus extends AbstractOptions
      */
     public function getLogger()
     {
-        return "cqrs.logger.{$this->eventHandlerLocator}";
+        return $this->logger;
     }
 }
