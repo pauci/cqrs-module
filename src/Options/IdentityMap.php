@@ -7,10 +7,14 @@ use Zend\Stdlib\AbstractOptions;
 
 class IdentityMap extends AbstractOptions
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $class = SimpleIdentityMap::class;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $entityManager = 'doctrine.entitymanager.orm_default';
 
     /**

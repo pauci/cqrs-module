@@ -7,10 +7,14 @@ use Zend\Stdlib\AbstractOptions;
 
 class CommandHandlerLocator extends AbstractOptions
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $class = ServiceCommandHandlerLocator::class;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $handlers = [];
 
     /**

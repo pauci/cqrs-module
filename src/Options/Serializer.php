@@ -6,10 +6,14 @@ use Zend\Stdlib\AbstractOptions;
 
 class Serializer extends AbstractOptions
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $class;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $instance;
 
     /**

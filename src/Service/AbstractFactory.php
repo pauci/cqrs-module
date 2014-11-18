@@ -9,10 +9,14 @@ use Zend\Stdlib\AbstractOptions;
 
 abstract class AbstractFactory implements FactoryInterface
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $name;
 
-    /** @var AbstractOptions */
+    /**
+     * @var AbstractOptions
+     */
     protected $options;
 
     /**

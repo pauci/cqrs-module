@@ -137,6 +137,9 @@ return [
     'service_manager' => [
         'abstract_factories' => [
             'CQRS' => CQRSModule\ServiceFactory\AbstractCqrsServiceFactory::class,
+        ],
+        'invokables' => [
+            'cqrs.logger.cqrs_default' => Psr\Log\NullLogger::class
         ]
     ],
 

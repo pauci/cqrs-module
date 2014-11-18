@@ -7,10 +7,14 @@ use Zend\Stdlib\AbstractOptions;
 
 class TransactionManager extends AbstractOptions
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $class = NoTransactionManager::class;
 
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $connection;
 
     /**

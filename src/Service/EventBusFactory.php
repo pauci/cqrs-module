@@ -4,6 +4,7 @@ namespace CQRSModule\Service;
 
 use CQRS\EventHandling\EventBusInterface;
 use CQRSModule\Options\EventBus as EventBusOptions;
+use Psr\Log\LoggerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class EventBusFactory extends AbstractFactory
@@ -39,6 +40,9 @@ class EventBusFactory extends AbstractFactory
         /** @var \CQRS\EventHandling\Locator\EventHandlerLocatorInterface $eventHandlerLocator */
         $eventHandlerLocator = $sl->get($options->getEventHandlerLocator());
 
-        return new $class($eventHandlerLocator);
+        /** @var LoggerInterface $logger */
+        $logger = $sl->get($options->getLogger());
+
+        return new $class($eventHandlerLocator, $logger);
     }
 } 
