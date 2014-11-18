@@ -105,6 +105,16 @@ class CommandBus extends AbstractOptions
     }
 
     /**
+     * @param string $logger
+     * @return self
+     */
+    public function setLogger($logger)
+    {
+        $this->logger = $logger;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getLogger()
