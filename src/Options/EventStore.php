@@ -14,7 +14,7 @@ class EventStore extends AbstractOptions
     /**
      * @var array
      */
-    protected $eventStores;
+    protected $eventStores = [];
 
     /**
      * @var string
