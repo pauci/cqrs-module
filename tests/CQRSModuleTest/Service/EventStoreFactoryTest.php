@@ -2,8 +2,9 @@
 
 namespace CQRSModuleTest\Service;
 
-use CQRS\Domain\Message\EventMessageInterface;
-use CQRS\EventStore\EventStoreInterface;
+use CQRS\EventStore\ChainingEventStore;
+use CQRS\EventStore\EventFilterInterface;
+use CQRS\EventStore\FilteringEventStore;
 use CQRS\Serializer\SerializerInterface;
 use CQRSModule\Service\EventStoreFactory;
 use PHPUnit_Framework_TestCase;
@@ -32,7 +33,7 @@ class EventStoreFactoryTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $serializer = $this->getMock('CQRS\Serializer\SerializerInterface');
+        $serializer = $this->getMock(SerializerInterface::class);
         $serviceManager->setService('cqrs.serializer.bar', $serializer);
 
         $conn = new stdClass();
@@ -48,7 +49,7 @@ class EventStoreFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('baz', $eventStore->namespace);
     }
 
-    public function testCreateDefaultEventStore()
+    public function testCreateEventStoreWithDefaults()
     {
         $factory        = new EventStoreFactory('foo');
         $serviceManager = new ServiceManager();
@@ -66,7 +67,7 @@ class EventStoreFactoryTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $serializer = $this->getMock('CQRS\Serializer\SerializerInterface');
+        $serializer = $this->getMock(SerializerInterface::class);
         $serviceManager->setService('cqrs.serializer.bar', $serializer);
 
         /** @var FooEventStore $eventStore */
@@ -76,26 +77,70 @@ class EventStoreFactoryTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($serializer, $eventStore->serializer);
         $this->assertNull($eventStore->connection);
-        $this->assertEquals('default', $eventStore->namespace);
+        $this->assertNull($eventStore->namespace);
     }
-}
 
-class FooEventStore implements EventStoreInterface
-{
-    public $serializer;
-    public $connection;
-    public $namespace;
-
-    public function __construct(SerializerInterface $serializer, $connection, $namespace = 'default')
+    public function testCreateChainingEventStore()
     {
-        $this->serializer = $serializer;
-        $this->connection = $connection;
-        $this->namespace  = $namespace;
+        $factory        = new EventStoreFactory('chaining');
+        $serviceManager = new ServiceManager();
+        $serviceManager->setService(
+            'Configuration',
+            [
+                'cqrs' => [
+                    'event_store' => [
+                        'chaining' => [
+                            'class'        => ChainingEventStore::class,
+                            'event_stores' => [
+                                'foo'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        );
+
+        $eventStore = new FooEventStore();
+        $serviceManager->setService('cqrs.event_store.foo', $eventStore);
+
+        /** @var ChainingEventStore $eventStore */
+        $chainingEventStore = $factory->createService($serviceManager);
+
+        $this->assertInstanceOf(ChainingEventStore::class, $chainingEventStore);
+        $this->assertAttributeContains($eventStore, 'eventStores', $chainingEventStore);
     }
 
-    public function store(EventMessageInterface $event)
-    {}
 
-    public function read($offset = null, $limit = 10)
-    {}
+    public function testCreateFilteringEventStore()
+    {
+        $factory        = new EventStoreFactory('filtering');
+        $serviceManager = new ServiceManager();
+        $serviceManager->setService(
+            'Configuration',
+            [
+                'cqrs' => [
+                    'event_store' => [
+                        'filtering' => [
+                            'class'        => FilteringEventStore::class,
+                            'event_store'  => 'foo',
+                            'event_filter' => 'some_event_filter'
+                        ]
+                    ]
+                ]
+            ]
+        );
+
+        $eventStore = new FooEventStore();
+        $serviceManager->setService('cqrs.event_store.foo', $eventStore);
+
+        $eventFilter = $this->getMock(EventFilterInterface::class);
+        $serviceManager->setService('some_event_filter', $eventFilter);
+
+        /** @var FilteringEventStore $eventStore */
+        $filteringEventStore = $factory->createService($serviceManager);
+
+        $this->assertInstanceOf(FilteringEventStore::class, $filteringEventStore);
+        $this->assertAttributeSame($eventStore, 'eventStore', $filteringEventStore);
+        $this->assertAttributeSame($eventFilter, 'filter', $filteringEventStore);
+    }
 }

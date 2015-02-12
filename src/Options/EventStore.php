@@ -12,6 +12,16 @@ class EventStore extends AbstractOptions
     protected $class;
 
     /**
+     * @var array
+     */
+    protected $eventStores;
+
+    /**
+     * @var string
+     */
+    protected $eventFilter;
+
+    /**
      * @var string
      */
     protected $serializer;
@@ -28,7 +38,7 @@ class EventStore extends AbstractOptions
 
     /**
      * @param string $class
-     * @return self
+     * @return $this
      */
     public function setClass($class)
     {
@@ -42,6 +52,62 @@ class EventStore extends AbstractOptions
     public function getClass()
     {
         return $this->class;
+    }
+
+    /**
+     * @param array $eventStores
+     * @return $this
+     */
+    public function setEventStores(array $eventStores)
+    {
+        $this->eventStores = $eventStores;
+        return $this;
+    }
+
+    /**
+     * @param string $eventStore
+     * @return $this
+     */
+    public function setEventStore($eventStore)
+    {
+        return $this->setEventStores([$eventStore]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getEventStores()
+    {
+        return array_map(function($eventStore) {
+            return "cqrs.event_store.$eventStore";
+        }, $this->eventStores);
+    }
+
+    /**
+     * @return string
+     */
+    public function getEventStore()
+    {
+        $eventStores = $this->getEventStores();
+        return isset($eventStores[0]) ? $eventStores[0] : null;
+    }
+
+    /**
+     * @param string $eventFilter
+     * @return $this
+     */
+    public function setEventFilter($eventFilter)
+    {
+        $this->eventFilter = $eventFilter;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEventFilter()
+    {
+        return $this->eventFilter;
     }
 
     /**
@@ -64,7 +130,7 @@ class EventStore extends AbstractOptions
 
     /**
      * @param string $connection
-     * @return self
+     * @return $this
      */
     public function setConnection($connection)
     {
