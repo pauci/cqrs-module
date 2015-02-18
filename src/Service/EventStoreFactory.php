@@ -69,7 +69,8 @@ class EventStoreFactory extends AbstractFactory
         }
 
         $namespace = $options->getNamespace();
+        $size      = $options->getSize();
 
-        return new $class($serializer, $connection, $namespace);
+        return new $class($serializer, $connection, $namespace, $size);
     }
 } 

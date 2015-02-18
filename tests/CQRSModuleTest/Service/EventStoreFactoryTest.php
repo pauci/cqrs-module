@@ -26,7 +26,8 @@ class EventStoreFactoryTest extends PHPUnit_Framework_TestCase
                             'class'      => FooEventStore::class,
                             'serializer' => 'bar',
                             'connection' => 'cqrs.test.connection',
-                            'namespace'  => 'baz'
+                            'namespace'  => 'baz',
+                            'size'       => 100
                         ],
                     ],
                 ],
@@ -47,6 +48,7 @@ class EventStoreFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertSame($serializer, $eventStore->serializer);
         $this->assertSame($conn, $eventStore->connection);
         $this->assertEquals('baz', $eventStore->namespace);
+        $this->assertEquals(100, $eventStore->size);
     }
 
     public function testCreateEventStoreWithDefaults()
@@ -78,6 +80,7 @@ class EventStoreFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertSame($serializer, $eventStore->serializer);
         $this->assertNull($eventStore->connection);
         $this->assertNull($eventStore->namespace);
+        $this->assertNull($eventStore->size);
     }
 
     public function testCreateChainingEventStore()

@@ -37,6 +37,11 @@ class EventStore extends AbstractOptions
     protected $namespace;
 
     /**
+     * @var int
+     */
+    protected $size;
+
+    /**
      * @param string $class
      * @return $this
      */
@@ -162,5 +167,23 @@ class EventStore extends AbstractOptions
     public function getNamespace()
     {
         return $this->namespace;
+    }
+
+    /**
+     * @param int $size
+     * @return $this
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize()
+    {
+        return $this->size;
     }
 }
