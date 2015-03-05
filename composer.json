@@ -1,17 +1,11 @@
 {
-    "name": "sygic/cqrs-module",
+    "name": "pauci/cqrs-module",
     "description": "Zend Framework 2 Module that provides functionality for CQRS library",
     "type": "library",
-    "license": "proprietary",
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://satis.ssd.sygic.local"
-        }
-    ],
+    "license": "MIT",
     "require": {
         "php": ">=5.5",
-        "sygic/cqrs": "dev-master"
+        "pauci/cqrs": "dev-master"
     },
     "require-dev": {
         "zendframework/zendframework": "~2.3",
