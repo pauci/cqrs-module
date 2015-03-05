@@ -1,5 +1,7 @@
 # CQRS Module for Zend Framework 2
 
+[![Build Status](https://travis-ci.org/pauci/cqrs-module.svg?branch=master)](https://travis-ci.org/pauci/cqrs-module)
+
 CQRSModule integrates CQRS library with Zend Framework 2 quickly and easily.
 
 ## Installation
