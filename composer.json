@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": ">=5.5",
-        "pauci/cqrs": "dev-master"
+        "pauci/cqrs": "0.1.x-dev"
     },
     "require-dev": {
         "zendframework/zendframework": "~2.3",
@@ -16,6 +16,11 @@
     "autoload": {
         "psr-4": {
             "CQRSModule\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
         }
     }
 }
