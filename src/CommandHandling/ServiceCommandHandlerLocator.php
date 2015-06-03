@@ -2,7 +2,6 @@
 
 namespace CQRSModule\CommandHandling;
 
-use CQRS\CommandHandling\CommandInterface;
 use CQRS\CommandHandling\Locator\CommandHandlerLocatorInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
@@ -17,10 +16,10 @@ class ServiceCommandHandlerLocator implements
     private $handlersMap = [];
 
     /**
-     * @param CommandInterface $command
+     * @param object $command
      * @return object
      */
-    public function getCommandHandler(CommandInterface $command)
+    public function getCommandHandler($command)
     {
         $serviceName = $this->getServiceName(get_class($command));
 
