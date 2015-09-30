@@ -153,14 +153,6 @@ return [
                 ]
             ]
         ],
-        'configuration' => [
-            'orm_default' => [
-                'types' => [
-                    'uuid'        => Rhumsaa\Uuid\Doctrine\UuidType::class,
-                    'binary_uuid' => CQRS\Plugin\Doctrine\Type\BinaryUuidType::class,
-                ]
-            ]
-        ],
     ],
 
     'controllers' => [
