@@ -37,12 +37,12 @@ class TransactionManagerFactory extends AbstractFactory
     {
         $class = $options->getClass();
 
-        $transactionManager = new $class;
-
-        if ($transactionManager instanceof AbstractOrmTransactionManager) {
+        if (is_subclass_of($class, AbstractOrmTransactionManager::class)) {
             /** @var \Doctrine\ORM\EntityManagerInterface $connection */
             $connection = $sl->get($options->getConnection());
-            $transactionManager->setEntityManager($connection);
+            $transactionManager = new $class($connection);
+        } else {
+            $transactionManager = new $class;
         }
 
         return $transactionManager;
