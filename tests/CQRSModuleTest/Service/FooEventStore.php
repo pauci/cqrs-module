@@ -5,7 +5,7 @@ namespace CQRSModuleTest\Service;
 use CQRS\Domain\Message\EventMessageInterface;
 use CQRS\EventStore\EventStoreInterface;
 use CQRS\Serializer\SerializerInterface;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class FooEventStore implements EventStoreInterface
 {
@@ -28,6 +28,6 @@ class FooEventStore implements EventStoreInterface
     public function read($offset = null, $limit = 10)
     {}
 
-    public function iterate(Uuid $previousEventId = null)
+    public function iterate(UuidInterface $previousEventId = null)
     {}
 }

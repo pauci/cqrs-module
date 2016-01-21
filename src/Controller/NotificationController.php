@@ -8,7 +8,9 @@ use Zend\View\Model\JsonModel;
 
 class NotificationController extends AbstractRestfulController
 {
-    /** @var EventStoreInterface */
+    /**
+     * @var EventStoreInterface
+     */
     private $eventStore;
 
     /**
@@ -28,8 +30,8 @@ class NotificationController extends AbstractRestfulController
 
         $selfUrl = $this->url()
             ->fromRoute(null, [], [
-                'query'           => $this->params()->fromQuery(),
-                'force_canonical' => true
+                'query' => $this->params()->fromQuery(),
+                'force_canonical' => true,
             ]);
 
         $data = [
@@ -38,8 +40,8 @@ class NotificationController extends AbstractRestfulController
             ],
             'count' => count($events),
             '_embedded' => [
-                'event' => array_values($events)
-            ]
+                'event' => array_values($events),
+            ],
         ];
 
         return new JsonModel($data);
