@@ -10,7 +10,7 @@ return [
                 'transaction_manager'     => 'cqrs_default',
                 'event_publisher'         => 'cqrs_default',
                  */
-            ]
+            ],
         ],
 
         'command_handler_locator' => [
@@ -26,7 +26,7 @@ return [
                     ]
                 ],
                  */
-            ]
+            ],
         ],
 
         'transaction_manager' => [
@@ -36,7 +36,7 @@ return [
                 'class'      => 'CQRS\Plugin\Doctrine\CommandHandling\ImplicitOrmTransactionManager',
                 'connection' => 'doctrine.entitymanager.orm_default',
                  */
-            ]
+            ],
         ],
 
         'event_publisher' => [
@@ -46,11 +46,11 @@ return [
                 'event_bus'   => 'cqrs_default',
                 'event_store' => 'cqrs_default',
                  */
-            ]
+            ],
         ],
 
         'identity_map' => [
-            'cqrs_default' => []
+            'cqrs_default' => [],
         ],
 
         'event_bus' => [
@@ -72,7 +72,7 @@ return [
                     ]
                 ],
                  */
-            ]
+            ],
         ],
 
         'event_handler_locator' => [
@@ -104,21 +104,21 @@ return [
                     // An array of instances
                 ],
                  */
-            ]
+            ],
         ],
 
         'event_store' => [
             'cqrs_default' => [
                 'class'      => CQRS\Plugin\Doctrine\EventStore\TableEventStore::class,
                 'connection' => 'doctrine.connection.orm_default',
-                'serializer' => 'reflection'
-            ]
+                'serializer' => 'reflection',
+            ],
         ],
 
         'serializer' => [
             'reflection' => [
                 'class' => CQRS\Serializer\ReflectionSerializer::class,
-            ]
+            ],
         ],
     ],
 
@@ -139,8 +139,8 @@ return [
             'CQRS' => CQRSModule\ServiceFactory\AbstractCqrsServiceFactory::class,
         ],
         'invokables' => [
-            'cqrs.logger.cqrs_default' => Psr\Log\NullLogger::class
-        ]
+            'cqrs.logger.cqrs_default' => Psr\Log\NullLogger::class,
+        ],
     ],
 
     'doctrine' => [
@@ -149,43 +149,43 @@ return [
                 'class' => Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
                 'cache' => 'array',
                 'paths' => [
-                    __DIR__ . '/../../cqrs/src/Domain/Model'
-                ]
-            ]
+                    __DIR__ . '/../../cqrs/src/Domain/Model',
+                ],
+            ],
         ],
     ],
 
     'controllers' => [
         'factories' => [
             CQRSModule\Controller\NotificationController::class => CQRSModule\Service\NotificationControllerFactory::class,
-        ]
+        ],
     ],
 
     'router' => [
         'routes' => [
             'cqrs' => [
-                'type' => 'literal',
+                'type' => Zend\Mvc\Router\Http\Literal::class,
                 'options' => [
                     'route' => '/cqrs',
                 ],
                 'child_routes' => [
                     'notifications' => [
-                        'type' => 'segment',
+                        'type' => Zend\Mvc\Router\Http\Segment::class,
                         'options' => [
-                            'route' => '/notifications',
+                            'route' => '/notifications[/:eventId[,:count]]',
                             'defaults' => [
-                                'controller' => CQRSModule\Controller\NotificationController::class
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ]
+                                'controller' => CQRSModule\Controller\NotificationController::class,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
     ],
 
     'view_manager' => [
         'strategies' => [
-            'ViewJsonStrategy'
-        ]
+            'ViewJsonStrategy',
+        ],
     ],
 ];

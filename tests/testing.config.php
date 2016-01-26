@@ -11,7 +11,7 @@ return [
                 'params' => [
                     'memory' => true,
                 ],
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];

@@ -11,7 +11,9 @@ use Zend\Mvc\Service\ServiceManagerConfig;
  */
 class ServiceManagerFactory
 {
-    /** @var array */
+    /**
+     * @var array
+     */
     protected static $config = [];
 
     /**
@@ -31,7 +33,7 @@ class ServiceManagerFactory
     {
         $serviceManager = new ServiceManager(
             new ServiceManagerConfig(
-                isset(static::$config['service_manager']) ? static::$config['service_manager'] : []
+                array_key_exists('service_manager', static::$config) ? static::$config['service_manager'] : []
             )
         );
         $serviceManager->setService('ApplicationConfig', static::$config);
