@@ -5,7 +5,6 @@ namespace CQRSModule\Controller;
 use CQRS\Domain\Message\EventMessageInterface;
 use CQRS\EventStore\EventStoreInterface;
 use Ramsey\Uuid\Uuid;
-use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 
@@ -76,4 +75,4 @@ class NotificationController extends AbstractRestfulController
 
         return new JsonModel($data);
     }
-} 
+}
