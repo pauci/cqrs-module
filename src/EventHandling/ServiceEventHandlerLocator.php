@@ -54,15 +54,11 @@ class ServiceEventHandlerLocator extends MemoryEventHandlerLocator implements
      */
     private function subscribeServices($eventName)
     {
-        $methodName = 'on' . $eventName;
-
         $eventName = strtolower($eventName);
 
         if (!isset($this->services[$eventName])) {
             return;
         }
-
-        $listeners = [];
 
         foreach ($this->services[$eventName] as $priority => $serviceNames) {
             foreach ($serviceNames as $serviceName) {
@@ -72,19 +68,9 @@ class ServiceEventHandlerLocator extends MemoryEventHandlerLocator implements
                 }
 
                 $service = $this->serviceLocator->get($serviceName);
-
-                if (method_exists($service, $methodName)) {
-                    $listeners[$eventName][$priority] = [$service, $methodName];
-                }
-
-
                 $this->addSubscriber($service, $priority);
                 $this->subscribedServices[$serviceName] = true;
             }
-        }
-
-        foreach ($listeners as $listener) {
-            $this->addListener($eventName, $listener);
         }
 
         unset($this->services[$eventName]);
