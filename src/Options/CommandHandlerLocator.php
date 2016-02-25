@@ -2,7 +2,7 @@
 
 namespace CQRSModule\Options;
 
-use CQRSModule\CommandHandling\ServiceCommandHandlerLocator;
+use CQRS\CommandHandling\Locator\ContainerCommandHandlerLocator;
 use Zend\Stdlib\AbstractOptions;
 
 class CommandHandlerLocator extends AbstractOptions
@@ -10,7 +10,7 @@ class CommandHandlerLocator extends AbstractOptions
     /**
      * @var string
      */
-    protected $class = ServiceCommandHandlerLocator::class;
+    protected $class = ContainerCommandHandlerLocator::class;
 
     /**
      * @var array

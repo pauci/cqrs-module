@@ -2,18 +2,17 @@
 
 namespace CQRSModule\Service;
 
-use CQRS\CommandHandling\Locator\CommandHandlerLocatorInterface;
-use CQRSModule\CommandHandling\ServiceCommandHandlerLocator;
+use CQRS\CommandHandling\Locator\ContainerCommandHandlerLocator;
 use CQRSModule\Options\CommandHandlerLocator as CommandHandlerLocatorOptions;
 use RuntimeException;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\Memory\Container\ContainerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class CommandHandlerLocatorFactory extends AbstractFactory
 {
     /**
      * @param ServiceLocatorInterface $serviceLocator
-     * @return CommandHandlerLocatorInterface
+     * @return ContainerInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
@@ -33,41 +32,28 @@ class CommandHandlerLocatorFactory extends AbstractFactory
     /**
      * @param ServiceLocatorInterface $sl
      * @param CommandHandlerLocatorOptions $options
-     * @return CommandHandlerLocatorInterface
+     * @return ContainerInterface
      * @throws RuntimeException
      */
     protected function create(ServiceLocatorInterface $sl, CommandHandlerLocatorOptions $options)
     {
-        $class = $options->getClass();
-
-        if (!$class) {
-            throw new RuntimeException('CommandHandlerLocatorInterface must have a class name to instantiate');
-        }
-
-        $commandHandlerLocator = new $class;
-
-        if ($commandHandlerLocator instanceof ServiceLocatorAwareInterface) {
-            $commandHandlerLocator->setServiceLocator($sl);
-        }
-
-        $handlers = $options->getHandlers();
-        foreach ($handlers as $commandTypeOrServiceName => $serviceOrCommandTypes) {
-            if (is_array($serviceOrCommandTypes)) {
-                /** @var ServiceCommandHandlerLocator $commandHandlerLocator */
-                $commandTypes = $serviceOrCommandTypes;
-                $service      = $commandTypeOrServiceName;
+        $map = [];
+        foreach ($options->getHandlers() as $commandTypeOrServiceName => $serviceNameOrCommandTypes) {
+            if (is_array($serviceNameOrCommandTypes)) {
+                $commandTypes = $serviceNameOrCommandTypes;
+                $serviceName = $commandTypeOrServiceName;
 
                 foreach ($commandTypes as $commandType) {
-                    $commandHandlerLocator->register($commandType, $service);
+                    $map[$commandType] = $serviceName;
                 }
             } else {
                 $commandType = $commandTypeOrServiceName;
-                $service     = $serviceOrCommandTypes;
+                $serviceName = $serviceNameOrCommandTypes;
 
-                $commandHandlerLocator->register($commandType, $service);
+                $map[$commandType] = $serviceName;
             }
         }
 
-        return $commandHandlerLocator;
+        return new ContainerCommandHandlerLocator($sl, $map);
     }
 }
