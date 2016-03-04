@@ -3,6 +3,9 @@
 namespace CQRSModule\Service;
 
 use CQRS\CommandHandling\CommandBusInterface;
+use CQRS\CommandHandling\CommandHandlerLocator;
+use CQRS\HandlerResolver\CommandHandlerResolver;
+use CQRS\HandlerResolver\ContainerHandlerResolver;
 use CQRSModule\Options\CommandBus as CommandBusOptions;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -36,17 +39,22 @@ class CommandBusFactory extends AbstractFactory
     {
         $class = $options->getClass();
 
-        /** @var \CQRS\CommandHandling\Locator\CommandHandlerLocatorInterface $commandHandlerLocator */
-        $commandHandlerLocator = $sl->get($options->getCommandHandlerLocator());
+        $commandHandlers = $options->getCommands();
+        foreach ($options->getHandlers() as $handler => $command) {
+            $commandHandlers[$command] = $handler;
+        }
 
-        /** @var \CQRS\CommandHandling\TransactionManager\TransactionManagerInterface $transactionManager */
-        $transactionManager = $sl->get($options->getTransactionManager());
-
-        /** @var \CQRS\EventHandling\Publisher\EventPublisherInterface $eventPublisher */
-        $eventPublisher = $sl->get($options->getEventPublisher());
-
-        $logger = $sl->get($options->getLogger());
-
-        return new $class($commandHandlerLocator, $transactionManager, $eventPublisher, $logger);
+        return new $class(
+            new CommandHandlerLocator(
+                $commandHandlers,
+                new ContainerHandlerResolver(
+                    $sl,
+                    new CommandHandlerResolver()
+                )
+            ),
+            $sl->get($options->getTransactionManager()),
+            $sl->get($options->getEventPublisher()),
+            $sl->get($options->getLogger())
+        );
     }
 }

@@ -61,11 +61,9 @@ class ModuleDefinedServicesTest extends PHPUnit_Framework_TestCase
     {
         return [
             ['cqrs.command_bus.cqrs_default', true],
-            ['cqrs.command_handler_locator.cqrs_default', true],
             ['cqrs.transaction_manager.cqrs_default', true],
             ['cqrs.event_publisher.cqrs_default', true],
             ['cqrs.event_bus.cqrs_default', true],
-            ['cqrs.event_handler_locator.cqrs_default', true],
             ['cqrs.event_store.cqrs_default', true],
             ['cqrs.serializer.reflection', true],
             ['foo', false],

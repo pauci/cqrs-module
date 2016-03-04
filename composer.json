@@ -15,20 +15,15 @@
     },
     "require": {
         "php": "^5.6 || ^7.0",
-        "pauci/cqrs": "dev-master",
-        "zendframework/zend-mvc": "~2.3",
-        "zendframework/zend-servicemanager": "~2.3",
-        "zendframework/zend-stdlib": "~2.3"
+        "pauci/cqrs": "^0.1.0",
+        "zendframework/zend-mvc": "^2.3",
+        "zendframework/zend-servicemanager": "^2.3",
+        "zendframework/zend-stdlib": "^2.3"
     },
     "require-dev": {
-        "zendframework/zendframework": "~2.3",
+        "zendframework/zendframework": "^2.3",
         "zendframework/zend-developer-tools": "*",
         "doctrine/doctrine-orm-module": "^0.9.2",
         "phpunit/phpunit": "^5.1.4"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.1.x-dev"
-        }
     }
 }

@@ -13,9 +13,14 @@ class CommandBus extends AbstractOptions
     protected $class = SequentialCommandBus::class;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $commandHandlerLocator = 'cqrs_default';
+    protected $commands = [];
+
+    /**
+     * @var array
+     */
+    protected $handlers = [];
 
     /**
      * @var string
@@ -51,21 +56,39 @@ class CommandBus extends AbstractOptions
     }
 
     /**
-     * @param string $commandHandlerLocator
-     * @return self
+     * @param array $commands
+     * @return $this
      */
-    public function setCommandHandlerLocator($commandHandlerLocator)
+    public function setCommands(array $commands)
     {
-        $this->commandHandlerLocator = $commandHandlerLocator;
+        $this->commands = $commands;
         return $this;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getCommandHandlerLocator()
+    public function getCommands()
     {
-        return "cqrs.command_handler_locator.{$this->commandHandlerLocator}";
+        return $this->commands;
+    }
+
+    /**
+     * @param array $handlers
+     * @return $this
+     */
+    public function setHandlers(array $handlers)
+    {
+        $this->handlers = $handlers;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHandlers()
+    {
+        return $this->handlers;
     }
 
     /**

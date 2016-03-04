@@ -13,6 +13,16 @@ class EventBus extends AbstractOptions
     protected $class = SynchronousEventBus::class;
 
     /**
+     * @var array
+     */
+    protected $events = [];
+
+    /**
+     * @var array
+     */
+    protected $handlers = [];
+
+    /**
      * @var string
      */
     protected $eventHandlerLocator = 'cqrs_default';
@@ -38,6 +48,42 @@ class EventBus extends AbstractOptions
     public function getClass()
     {
         return $this->class;
+    }
+
+    /**
+     * @param array $events
+     * @return $this
+     */
+    public function setEvents(array $events)
+    {
+        $this->events = $events;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param array $handlers
+     * @return $this
+     */
+    public function setHandlers($handlers)
+    {
+        $this->handlers = $handlers;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHandlers()
+    {
+        return $this->handlers;
     }
 
     /**

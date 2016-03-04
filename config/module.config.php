@@ -5,26 +5,19 @@ return [
         'command_bus' => [
             'cqrs_default' => [
                 /*
-                'class'                   => CQRS\CommandHandling\SequentialCommandBus::class,
-                'command_handler_locator' => 'cqrs_default',
-                'transaction_manager'     => 'cqrs_default',
-                'event_publisher'         => 'cqrs_default',
-                 */
-            ],
-        ],
-
-        'command_handler_locator' => [
-            'cqrs_default' => [
-                'class'    => CQRSModule\CommandHandling\ServiceCommandHandlerLocator::class,
-                /*
-                'handlers' => [
+                'class' => CQRS\CommandHandling\SequentialCommandBus::class,
+                'commands' => [
                     '<CommandType>' => '<CommandHandlerServiceName>',
-
+                ],
+                'handlers' => [
                     '<CommandHandlerServiceName>' => [
                         '<CommandType1>',
                         '<CommandType2>',
-                    ]
+                    ],
                 ],
+                'transaction_manager' => 'cqrs_default',
+                'event_publisher' => 'cqrs_default',
+                'logger' => 'cqrs_default,
                  */
             ],
         ],
@@ -33,7 +26,7 @@ return [
             'cqrs_default' => [
                 /*
                 // Configuration to use with doctrine:
-                'class'      => 'CQRS\Plugin\Doctrine\CommandHandling\ImplicitOrmTransactionManager',
+                'class' => 'CQRS\Plugin\Doctrine\CommandHandling\ImplicitOrmTransactionManager',
                 'connection' => 'doctrine.entitymanager.orm_default',
                  */
             ],
@@ -42,8 +35,8 @@ return [
         'event_publisher' => [
             'cqrs_default' => [
                 /*
-                'class'       => CQRS\EventHandling\Publisher\SimpleEventPublisher::class,
-                'event_bus'   => 'cqrs_default',
+                'class' => CQRS\EventHandling\Publisher\SimpleEventPublisher::class,
+                'event_bus' => 'cqrs_default',
                 'event_store' => 'cqrs_default',
                  */
             ],
@@ -56,60 +49,38 @@ return [
         'event_bus' => [
             'cqrs_default' => [
                 /*
-                'class'                 => CQRS\EventHandling\SynchronousEventBus::class,
+                'class' => CQRS\EventHandling\SynchronousEventBus::class,
+                'events' => [
+                    '<EventType1>' => [
+                        '<EventHandlerService1>',
+                        '<EventHandlerService2>',
+                    ],
+                    '<EventType2>' => [
+                        [
+                            'handler' => '<HighPriorityEventHandler>',
+                            'priority' => 100,
+                        ],
+                        [
+                            'handler' => '<LowPriorityEventHandler>',
+                            'priority' => -100,
+                        ],
+                    ],
+                ],
+                'handlers' => [
+                    '<EventHandlerName>' => [
+                        '<EventType3>',
+                        '<EventType4>',
+                    ],
+                ],
                 'event_handler_locator' => 'cqrs_default',
-                'event_store'           => 'cqrs_default',
-                'listeners' => [
-                    '<EventName>' => [
-                        'class'    => CallbackEventHandler::class,
-                        'callback' => function($event, $metadata, $timestamp, $sequenceNumber, $aggregateId) {}
-                    ],
-
-                    [
-                        'type'    => 'ServiceMethodsEventHandler',
-                        'service' => $service,
-                        'method'  => ''
-                    ]
-                ],
-                 */
-            ],
-        ],
-
-        'event_handler_locator' => [
-            'cqrs_default' => [
-                'class'    => CQRSModule\EventHandling\ServiceEventHandlerLocator::class,
-                /*
-                'services' => [
-                    '<ServiceName>' => [
-                        '<EventName1>',
-                        '<EventName2>',
-                    ],
-
-                    [
-                        'event'    => ['<EventName1>', ...],
-                        'service'  => ['<ServiceName1', ...],
-                        'priority' => 1
-                    ],
-                ],
-                'callbacks' => [
-                    '<EventName>' => function($event) {},
-
-                    [
-                        'event'    => ['<EventName1>, '<EventName2'],
-                        'callback' => function($event) {},
-                        'priority' => 1
-                    ]
-                ],
-                'subscribers' => [
-                    // An array of instances
-                ],
+                'event_store' => 'cqrs_default',
                  */
             ],
         ],
 
         'event_store' => [
             'cqrs_default' => [
-                'class'      => CQRS\Plugin\Doctrine\EventStore\TableEventStore::class,
+                'class' => CQRS\Plugin\Doctrine\EventStore\TableEventStore::class,
                 'connection' => 'doctrine.connection.orm_default',
                 'serializer' => 'reflection',
             ],
@@ -123,15 +94,13 @@ return [
     ],
 
     'cqrs_factories' => [
-        'command_bus'             => CQRSModule\Service\CommandBusFactory::class,
-        'command_handler_locator' => CQRSModule\Service\CommandHandlerLocatorFactory::class,
-        'transaction_manager'     => CQRSModule\Service\TransactionManagerFactory::class,
-        'event_publisher'         => CQRSModule\Service\EventPublisherFactory::class,
-        'event_bus'               => CQRSModule\Service\EventBusFactory::class,
-        'identity_map'            => CQRSModule\Service\IdentityMapFactory::class,
-        'event_handler_locator'   => CQRSModule\Service\EventHandlerLocatorFactory::class,
-        'event_store'             => CQRSModule\Service\EventStoreFactory::class,
-        'serializer'              => CQRSModule\Service\SerializerFactory::class,
+        'command_bus' => CQRSModule\Service\CommandBusFactory::class,
+        'transaction_manager' => CQRSModule\Service\TransactionManagerFactory::class,
+        'event_publisher' => CQRSModule\Service\EventPublisherFactory::class,
+        'event_bus' => CQRSModule\Service\EventBusFactory::class,
+        'identity_map' => CQRSModule\Service\IdentityMapFactory::class,
+        'event_store' => CQRSModule\Service\EventStoreFactory::class,
+        'serializer' => CQRSModule\Service\SerializerFactory::class,
     ],
 
     'service_manager' => [
