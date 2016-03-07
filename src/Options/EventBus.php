@@ -25,11 +25,6 @@ class EventBus extends AbstractOptions
     /**
      * @var string
      */
-    protected $eventHandlerLocator = 'cqrs_default';
-
-    /**
-     * @var string
-     */
     protected $logger = 'cqrs.logger.cqrs_default';
 
     /**
@@ -84,24 +79,6 @@ class EventBus extends AbstractOptions
     public function getHandlers()
     {
         return $this->handlers;
-    }
-
-    /**
-     * @param string $eventHandlerLocator
-     * @return self
-     */
-    public function setEventHandlerLocator($eventHandlerLocator)
-    {
-        $this->eventHandlerLocator = $eventHandlerLocator;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEventHandlerLocator()
-    {
-        return "cqrs.event_handler_locator.{$this->eventHandlerLocator}";
     }
 
     /**

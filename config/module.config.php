@@ -72,7 +72,6 @@ return [
                         '<EventType4>',
                     ],
                 ],
-                'event_handler_locator' => 'cqrs_default',
                 'event_store' => 'cqrs_default',
                  */
             ],
