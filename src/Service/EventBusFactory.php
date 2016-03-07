@@ -41,7 +41,7 @@ class EventBusFactory extends AbstractFactory
 
         $events = $options->getEvents();
         foreach ($options->getHandlers() as $handler => $handlerEvents) {
-            foreach ($handlerEvents as $event) {
+            foreach ((array) $handlerEvents as $event) {
                 $events[$event][] = $handler;
             }
         }

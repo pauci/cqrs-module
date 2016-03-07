@@ -40,8 +40,10 @@ class CommandBusFactory extends AbstractFactory
         $class = $options->getClass();
 
         $commandHandlers = $options->getCommands();
-        foreach ($options->getHandlers() as $handler => $command) {
-            $commandHandlers[$command] = $handler;
+        foreach ($options->getHandlers() as $handler => $commands) {
+            foreach ((array) $commands as $command) {
+                $commandHandlers[$command] = $handler;
+            }
         }
 
         return new $class(
