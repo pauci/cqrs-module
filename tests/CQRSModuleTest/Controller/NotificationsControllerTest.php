@@ -3,7 +3,7 @@
 namespace CQRSModuleTest\Controller;
 
 use CQRS\Domain\Message\GenericEventMessage;
-use CQRS\Domain\Message\Timestamp;
+use Pauci\DateTime\DateTime;
 use Ramsey\Uuid\Uuid;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
@@ -20,7 +20,7 @@ class NotificationsControllerTest extends AbstractHttpControllerTestCase
 
     public function testGetAll()
     {
-        $timestamp = new Timestamp('2016-01-26T16:25:32.225809+00:00');
+        $timestamp = DateTime::fromString('2016-01-26T16:25:32.225809+00:00');
 
         $messages = [];
         for ($i = 0; $i < 15; $i++) {
