@@ -28,7 +28,7 @@ class NotificationsControllerTest extends AbstractHttpControllerTestCase
             $messages[] = new GenericEventMessage(null, null, $eventId, $timestamp);
         }
 
-        $eventStore = $this->getMock('CQRS\EventStore\EventStoreInterface');
+        $eventStore = $this->createMock('CQRS\EventStore\EventStoreInterface');
         $eventStore->expects($this->once())
             ->method('iterate')
             ->willReturn($messages);
