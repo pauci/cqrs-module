@@ -34,7 +34,7 @@ class EventStoreFactoryTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $serializer = $this->getMock(SerializerInterface::class);
+        $serializer = $this->createMock(SerializerInterface::class);
         $serviceManager->setService('cqrs.serializer.bar', $serializer);
 
         $conn = new stdClass();
@@ -69,7 +69,7 @@ class EventStoreFactoryTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $serializer = $this->getMock(SerializerInterface::class);
+        $serializer = $this->createMock(SerializerInterface::class);
         $serviceManager->setService('cqrs.serializer.bar', $serializer);
 
         /** @var FooEventStore $eventStore */
@@ -136,7 +136,7 @@ class EventStoreFactoryTest extends PHPUnit_Framework_TestCase
         $eventStore = new FooEventStore();
         $serviceManager->setService('cqrs.event_store.foo', $eventStore);
 
-        $eventFilter = $this->getMock(EventFilterInterface::class);
+        $eventFilter = $this->createMock(EventFilterInterface::class);
         $serviceManager->setService('some_event_filter', $eventFilter);
 
         /** @var FilteringEventStore $eventStore */
