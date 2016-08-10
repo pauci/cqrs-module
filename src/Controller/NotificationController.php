@@ -39,39 +39,40 @@ class NotificationController extends AbstractRestfulController
 
         $selfUrl = $this->url()
             ->fromRoute(null, [], ['force_canonical' => true], true);
+
         $nextUrl = false;
 
+        $lastEventId = $previousEventId;
         $events = [];
         $i = 0;
         /** @var EventMessageInterface $event */
         foreach ($iterator as $event) {
-            $events[] = $event;
-            $i++;
             if ($i >= $count) {
-                $nextUrl = $this->url()->fromRoute(null, [], [
-                    'force_canonical' => true,
-                    'query' => [
-                        'previousEventId' => $event->getId()->toString(),
-                    ],
-                ], true);
                 break;
             }
+
+            $events[] = $event;
+            $i++;
+            $lastEventId = $event->getId()->toString();
         }
 
+        $nextUrl = $this->url()->fromRoute(null, [], [
+            'force_canonical' => true,
+            'query' => [
+                'previousEventId' => (string)$lastEventId,
+            ],
+        ], true);
 
         $data = [
             '_links' => [
                 'self' => $selfUrl,
+                'next' => $nextUrl
             ],
             'count' => count($events),
             '_embedded' => [
                 'event' => array_values($events),
             ],
         ];
-
-        if ($nextUrl) {
-            $data['_links']['next'] = $nextUrl;
-        }
 
         return new JsonModel($data);
     }
