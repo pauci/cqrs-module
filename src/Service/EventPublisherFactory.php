@@ -10,19 +10,27 @@ use CQRS\EventStore\EventStoreInterface;
 use CQRS\Plugin\Doctrine\EventHandling\Publisher\DoctrineEventPublisher;
 use CQRSModule\Options\EventPublisher as EventPublisherOptions;
 use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class EventPublisherFactory extends AbstractFactory
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array $options
      * @return EventPublisherInterface
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var EventPublisherOptions $options */
-        $options = $this->getOptions($serviceLocator, 'event_publisher');
-        return $this->create($serviceLocator, $options);
+        $options = $this->getOptions($container, 'event_publisher');
+        return $this->create($container, $options);
+    }
+
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, EventPublisherInterface::class);
     }
 
     /**
@@ -34,22 +42,22 @@ class EventPublisherFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceLocatorInterface $sl
+     * @param ContainerInterface $container
      * @param EventPublisherOptions $options
      * @return EventPublisherInterface
      */
-    protected function create(ServiceLocatorInterface $sl, EventPublisherOptions $options)
+    protected function create(ContainerInterface $container, EventPublisherOptions $options)
     {
         $class = $options->getClass();
 
         /** @var EventBusInterface $eventBus */
-        $eventBus = $sl->get($options->getEventBus());
+        $eventBus = $container->get($options->getEventBus());
 
         /** @var IdentityMapInterface $identityMap */
-        $identityMap = $sl->get($options->getIdentityMap());
+        $identityMap = $container->get($options->getIdentityMap());
 
         /** @var EventStoreInterface $eventStore */
-        $eventStore = $sl->get($options->getEventStore());
+        $eventStore = $container->get($options->getEventStore());
 
         $additionalMetadata = $options->getAdditionalMetadata();
 
@@ -57,7 +65,7 @@ class EventPublisherFactory extends AbstractFactory
 
         if ($eventPublisher instanceof DoctrineEventPublisher) {
             /** @var EntityManager $entityManager */
-            $entityManager = $sl->get($options->getEntityManager());
+            $entityManager = $container->get($options->getEntityManager());
             $entityManager->getEventManager()->addEventSubscriber($eventPublisher);
         }
 

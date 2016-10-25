@@ -7,19 +7,28 @@ use CQRS\CommandHandling\CommandHandlerLocator;
 use CQRS\HandlerResolver\CommandHandlerResolver;
 use CQRS\HandlerResolver\ContainerHandlerResolver;
 use CQRSModule\Options\CommandBus as CommandBusOptions;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class CommandBusFactory extends AbstractFactory
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array $options
      * @return CommandBusInterface
+     * @internal param ServiceLocatorInterface $serviceLocator
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var CommandBusOptions $options */
-        $options = $this->getOptions($serviceLocator, 'command_bus');
-        return $this->create($serviceLocator, $options);
+        $options = $this->getOptions($container, 'command_bus');
+        return $this->create($container, $options);
+    }
+
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, CommandBusInterface::class);
     }
 
     /**
@@ -31,11 +40,11 @@ class CommandBusFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceLocatorInterface $sl
+     * @param ContainerInterface $container
      * @param CommandBusOptions $options
      * @return CommandBusInterface
      */
-    protected function create(ServiceLocatorInterface $sl, CommandBusOptions $options)
+    protected function create(ContainerInterface $container, CommandBusOptions $options)
     {
         $class = $options->getClass();
 
@@ -50,13 +59,13 @@ class CommandBusFactory extends AbstractFactory
             new CommandHandlerLocator(
                 $commandHandlers,
                 new ContainerHandlerResolver(
-                    $sl,
+                    $container,
                     new CommandHandlerResolver()
                 )
             ),
-            $sl->get($options->getTransactionManager()),
-            $sl->get($options->getEventPublisher()),
-            $sl->get($options->getLogger())
+            $container->get($options->getTransactionManager()),
+            $container->get($options->getEventPublisher()),
+            $container->get($options->getLogger())
         );
     }
 }

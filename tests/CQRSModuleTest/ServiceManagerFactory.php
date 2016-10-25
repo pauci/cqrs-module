@@ -2,7 +2,6 @@
 
 namespace CQRSModuleTest;
 
-use Zend\Mvc\Service\ServiceListenerFactory;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
 
@@ -31,11 +30,11 @@ class ServiceManagerFactory
      */
     public static function getServiceManager()
     {
-        $serviceManager = new ServiceManager(
-            new ServiceManagerConfig(
-                array_key_exists('service_manager', static::$config) ? static::$config['service_manager'] : []
-            )
+        $serviceManager = new ServiceManager();
+        $config = new ServiceManagerConfig(
+            array_key_exists('service_manager', static::$config) ? static::$config['service_manager'] : []
         );
+        $config->configureServiceManager($serviceManager);
         $serviceManager->setService('ApplicationConfig', static::$config);
 
         /** @var \Zend\ModuleManager\ModuleManager $moduleManager */

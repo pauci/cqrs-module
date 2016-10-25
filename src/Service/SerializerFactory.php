@@ -3,20 +3,28 @@
 namespace CQRSModule\Service;
 
 use CQRS\Serializer\SerializerInterface;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use CQRSModule\Options\Serializer as SerializerOptions;
 
 class SerializerFactory extends AbstractFactory
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array $options
      * @return SerializerInterface
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var SerializerOptions $options */
-        $options = $this->getOptions($serviceLocator, 'serializer');
-        return $this->create($serviceLocator, $options);
+        $options = $this->getOptions($container, 'serializer');
+        return $this->create($container, $options);
+    }
+
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, SerializerInterface::class);
     }
 
     /**
@@ -28,17 +36,17 @@ class SerializerFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceLocatorInterface $sl
+     * @param ContainerInterface $container
      * @param SerializerOptions $options
      * @return SerializerInterface
      */
-    protected function create(ServiceLocatorInterface $sl, SerializerOptions $options)
+    protected function create(ContainerInterface $container, SerializerOptions $options)
     {
         $class = $options->getClass();
 
         $instanceName = $options->getInstance();
         if ($instanceName !== null) {
-            $instance = $sl->get($instanceName);
+            $instance = $container->get($instanceName);
             return new $class($instance);
         }
 
