@@ -9,19 +9,27 @@ use CQRS\EventStore\FilteringEventStore;
 use CQRS\EventStore\MemoryEventStore;
 use CQRS\Serializer\SerializerInterface;
 use CQRSModule\Options\EventStore as EventStoreOptions;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class EventStoreFactory extends AbstractFactory
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array $options
      * @return EventStoreInterface
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var EventStoreOptions $options */
-        $options = $this->getOptions($serviceLocator, 'event_store');
-        return $this->create($serviceLocator, $options);
+        $options = $this->getOptions($container, 'event_store');
+        return $this->create($container, $options);
+    }
+
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, EventStoreInterface::class);
     }
 
     /**

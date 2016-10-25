@@ -7,19 +7,27 @@ use CQRS\EventHandling\EventHandlerLocator;
 use CQRS\HandlerResolver\ContainerHandlerResolver;
 use CQRS\HandlerResolver\EventHandlerResolver;
 use CQRSModule\Options\EventBus as EventBusOptions;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class EventBusFactory extends AbstractFactory
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface|ServiceLocatorInterface $container
+     * @param string $requestedName
+     * @param array $options
      * @return EventBusInterface
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var EventBusOptions $options */
-        $options = $this->getOptions($serviceLocator, 'event_bus');
-        return $this->create($serviceLocator, $options);
+        $options = $this->getOptions($container, 'event_bus');
+        return $this->create($container, $options);
+    }
+
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, EventBusInterface::class);
     }
 
     /**
@@ -31,11 +39,11 @@ class EventBusFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceLocatorInterface $sl
+     * @param ContainerInterface $container
      * @param EventBusOptions $options
      * @return EventBusInterface
      */
-    protected function create(ServiceLocatorInterface $sl, EventBusOptions $options)
+    protected function create(ContainerInterface $container, EventBusOptions $options)
     {
         $class = $options->getClass();
 
@@ -50,11 +58,11 @@ class EventBusFactory extends AbstractFactory
             new EventHandlerLocator(
                 $events,
                 new ContainerHandlerResolver(
-                    $sl,
+                    $container,
                     new EventHandlerResolver()
                 )
             ),
-            $sl->get($options->getLogger())
+            $container->get($options->getLogger())
         );
     }
 } 

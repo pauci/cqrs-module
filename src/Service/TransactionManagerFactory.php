@@ -5,19 +5,27 @@ namespace CQRSModule\Service;
 use CQRS\CommandHandling\TransactionManager\TransactionManagerInterface;
 use CQRS\Plugin\Doctrine\CommandHandling\AbstractOrmTransactionManager;
 use CQRSModule\Options\TransactionManager as TransactionManagerOptions;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class TransactionManagerFactory extends AbstractFactory
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array $options
      * @return TransactionManagerInterface
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var TransactionManagerOptions $options */
-        $options = $this->getOptions($serviceLocator, 'transaction_manager');
-        return $this->create($serviceLocator, $options);
+        $options = $this->getOptions($container, 'transaction_manager');
+        return $this->create($container, $options);
+    }
+
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator);
     }
 
     /**
@@ -29,17 +37,17 @@ class TransactionManagerFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceLocatorInterface $sl
+     * @param ContainerInterface $container
      * @param TransactionManagerOptions $options
      * @return TransactionManagerInterface
      */
-    protected function create(ServiceLocatorInterface $sl, TransactionManagerOptions $options)
+    protected function create(ContainerInterface $container, TransactionManagerOptions $options)
     {
         $class = $options->getClass();
 
         if (is_subclass_of($class, AbstractOrmTransactionManager::class)) {
             /** @var \Doctrine\ORM\EntityManagerInterface $connection */
-            $connection = $sl->get($options->getConnection());
+            $connection = $container->get($options->getConnection());
             $transactionManager = new $class($connection);
         } else {
             $transactionManager = new $class;

@@ -2,33 +2,47 @@
 
 namespace CQRSModule\ServiceFactory;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AbstractCqrsServiceFactory implements AbstractFactoryInterface
 {
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param string $name
-     * @param string $requestedName
-     * @return bool
-     */
+    public function canCreate(ContainerInterface $container, $requestedName)
+    {
+        return $this->has($container, $requestedName);
+    }
+
     public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
     {
-        return false !== $this->getFactoryMapping($serviceLocator, $requestedName);
+        return $this->has($serviceLocator, $requestedName);
+    }
+
+    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    {
+        $this($serviceLocator, $requestedName);
     }
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
      * @param string $name
-     * @param string $requestedName
-     * @return mixed
-     * @throws ServiceNotFoundException
+     * @return bool
      */
-    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    public function has(ContainerInterface $container, $name)
     {
-        $mappings = $this->getFactoryMapping($serviceLocator, $requestedName);
+        return false !== $this->getFactoryMapping($container, $name);
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param string $name
+     * @param array $options
+     * @return mixed
+     */
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
+    {
+        $mappings = $this->getFactoryMapping($container, $name);
 
         if (!$mappings) {
             throw new ServiceNotFoundException();
@@ -36,18 +50,17 @@ class AbstractCqrsServiceFactory implements AbstractFactoryInterface
 
         $factoryClass = $mappings['factoryClass'];
         /* @var $factory \DoctrineModule\Service\AbstractFactory */
-        $factory      = new $factoryClass($mappings['serviceName']);
+        $factory = new $factoryClass($mappings['serviceName']);
 
-        return $factory->createService($serviceLocator);
+        return $factory->createService($container);
     }
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $serviceLocator
      * @param string $name
-     *
      * @return bool|array
      */
-    private function getFactoryMapping(ServiceLocatorInterface $serviceLocator, $name)
+    private function getFactoryMapping(ContainerInterface $serviceLocator, $name)
     {
         $matches = [];
 

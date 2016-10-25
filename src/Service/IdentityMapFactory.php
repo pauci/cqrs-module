@@ -6,19 +6,25 @@ use CQRS\EventHandling\Publisher\IdentityMapInterface;
 use CQRS\Plugin\Doctrine\EventHandling\Publisher\DoctrineIdentityMap;
 use CQRSModule\Options\IdentityMap as IdentityMapOptions;
 use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class IdentityMapFactory extends AbstractFactory
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
      * @return IdentityMapInterface
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container)
     {
         /** @var IdentityMapOptions $options */
-        $options = $this->getOptions($serviceLocator, 'identity_map');
-        return $this->create($serviceLocator, $options);
+        $options = $this->getOptions($container, 'identity_map');
+        return $this->create($container, $options);
+    }
+
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, IdentityMapInterface::class);
     }
 
     /**
@@ -30,17 +36,17 @@ class IdentityMapFactory extends AbstractFactory
     }
 
     /**
-     * @param ServiceLocatorInterface $sl
+     * @param ContainerInterface $container
      * @param IdentityMapOptions $options
      * @return IdentityMapInterface
      */
-    protected function create(ServiceLocatorInterface $sl, IdentityMapOptions $options)
+    protected function create(ContainerInterface $container, IdentityMapOptions $options)
     {
         $class = $options->getClass();
 
         if ($class == DoctrineIdentityMap::class) {
             /** @var EntityManager $entityManager */
-            $entityManager = $sl->get($options->getEntityManager());
+            $entityManager = $container->get($options->getEntityManager());
             return new DoctrineIdentityMap($entityManager);
         }
 
