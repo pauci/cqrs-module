@@ -144,4 +144,4 @@ class CommandBus extends AbstractOptions
     {
         return $this->logger;
     }
-} 
+}

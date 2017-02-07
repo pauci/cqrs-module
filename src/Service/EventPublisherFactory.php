@@ -71,4 +71,4 @@ class EventPublisherFactory extends AbstractFactory
 
         return $eventPublisher;
     }
-} 
+}

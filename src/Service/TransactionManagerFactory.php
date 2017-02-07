@@ -55,4 +55,4 @@ class TransactionManagerFactory extends AbstractFactory
 
         return $transactionManager;
     }
-} 
+}

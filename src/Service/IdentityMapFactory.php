@@ -13,9 +13,11 @@ class IdentityMapFactory extends AbstractFactory
 {
     /**
      * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array $options
      * @return IdentityMapInterface
      */
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var IdentityMapOptions $options */
         $options = $this->getOptions($container, 'identity_map');
@@ -52,4 +54,4 @@ class IdentityMapFactory extends AbstractFactory
 
         return new $class;
     }
-} 
+}

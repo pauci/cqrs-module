@@ -132,13 +132,13 @@ return [
     'router' => [
         'routes' => [
             'cqrs' => [
-                'type' => Zend\Router\Http\Literal::class,
+                'type' => Zend\Mvc\Router\Http\Literal::class,
                 'options' => [
                     'route' => '/cqrs',
                 ],
                 'child_routes' => [
                     'notifications' => [
-                        'type' => Zend\Router\Http\Segment::class,
+                        'type' => Zend\Mvc\Router\Http\Segment::class,
                         'options' => [
                             'route' => '/notifications[/:eventId[,:count]]',
                             'defaults' => [

@@ -52,4 +52,4 @@ class TransactionManager extends AbstractOptions
     {
         return $this->connection;
     }
-} 
+}
