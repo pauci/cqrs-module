@@ -65,4 +65,4 @@ class EventBusFactory extends AbstractFactory
             $container->get($options->getLogger())
         );
     }
-} 
+}

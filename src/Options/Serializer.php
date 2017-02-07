@@ -49,4 +49,4 @@ class Serializer extends AbstractOptions
     {
         return $this->instance;
     }
-} 
+}

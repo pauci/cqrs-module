@@ -54,4 +54,4 @@ class IdentityMapFactory extends AbstractFactory
 
         return new $class;
     }
-} 
+}

@@ -81,4 +81,4 @@ class EventStoreFactory extends AbstractFactory
 
         return new $class($serializer, $connection, $namespace, $size);
     }
-} 
+}

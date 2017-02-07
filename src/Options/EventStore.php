@@ -83,7 +83,7 @@ class EventStore extends AbstractOptions
      */
     public function getEventStores()
     {
-        return array_map(function($eventStore) {
+        return array_map(function ($eventStore) {
             return "cqrs.event_store.$eventStore";
         }, $this->eventStores);
     }
