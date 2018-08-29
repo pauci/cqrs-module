@@ -21,7 +21,7 @@ class AbstractCqrsServiceFactory implements AbstractFactoryInterface
 
     public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
     {
-        $this($serviceLocator, $requestedName);
+        return $this($serviceLocator, $requestedName);
     }
 
     /**
